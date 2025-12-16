@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tarea_2_multimedia/models/persona.dart';
+import 'personal_page.dart';
 
 // Creamos HomePage como StatefulWidget porque necesitará cambiar su estado cuando
 // creemos otro de los widgets, concretamete PersonalPage
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Persona? personaRecibida;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +23,17 @@ class _HomePageState extends State<HomePage> {
           children: [
             // Le ponemos un poco más de tamaño de fuente para que se aprecie mejor.
             Text("¡Bienvenidos!", style: TextStyle(fontSize: 30)),
+            // Flutter permite condiciones en children. Si la persona recibida es diferente de null
+            // mostrará los datos indicados en pantalla.
+            if (personaRecibida != null)
+              Text(
+                "Recibido instancia de Persona: ${personaRecibida!.nombre} ${personaRecibida!.apellidos}",
+                style: TextStyle(fontSize: 20, color: Colors.blue),
+              ),
             ElevatedButton(
-              onPressed: () {
+              // con Async y Await lo que haremos es una sincronización de esperar a que estén
+              // los datos para ser mandados a home_page
+              onPressed: () async {
                 final miPersona = Persona(
                   nombre: 'Rubén',
                   apellidos: 'Gómez Hernández',
@@ -30,6 +41,18 @@ class _HomePageState extends State<HomePage> {
                   correo: 'rubengomez@paucasesnovescifp.cat',
                   contrasenya: '12345',
                 );
+                final datosDevueltos = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PersonalPage(persona: miPersona),
+                  ),
+                );
+
+                if (datosDevueltos != null) {
+                  setState(() {
+                    personaRecibida = datosDevueltos;
+                  });
+                }
               },
               child: Text('Ir a Personal Page'),
             ),
