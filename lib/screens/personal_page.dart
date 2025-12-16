@@ -111,10 +111,10 @@ class _PersonalPageState extends State<PersonalPage> {
     final DateTime? fechaEscogida = await showDatePicker(
       context: context,
       initialDate: fechaSeleccionada,
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2007),
+      firstDate: DateTime(1950), // 1950 cubre bastante tiempo.
+      lastDate: DateTime(2007), // 18 años mínimo.
     );
-
+    // Si la fecha escogida no es null y es diferente a la seleccionado, convertimos seleccionada en la escogida.
     if (fechaEscogida != null && fechaEscogida != fechaSeleccionada) {
       setState(() {
         fechaSeleccionada = fechaEscogida;
