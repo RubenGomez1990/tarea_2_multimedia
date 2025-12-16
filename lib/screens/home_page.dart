@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
             // mostrará los datos indicados en pantalla.
             if (personaRecibida != null)
               Text(
-                "Recibido instancia de Persona: ${personaRecibida!.nombre} ${personaRecibida!.apellidos}",
+                "Recibido instancia de Persona: ${personaRecibida!.nombre} ${personaRecibida!.apellidos}, ${personaRecibida!.fechaNacimiento.day}-${personaRecibida!.fechaNacimiento.month}-${personaRecibida!.fechaNacimiento.year}",
                 style: TextStyle(fontSize: 20, color: Colors.blue),
               ),
             ElevatedButton(

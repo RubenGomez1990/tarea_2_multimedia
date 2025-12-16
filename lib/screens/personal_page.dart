@@ -12,6 +12,38 @@ class PersonalPage extends StatefulWidget {
 }
 
 class _PersonalPageState extends State<PersonalPage> {
+  // Tras investigar, utilizaremos controladores de texto declarados primero como Late.
+  late TextEditingController nombreControlador;
+  late TextEditingController apellidosControlador;
+  late TextEditingController emailControlador;
+  late TextEditingController contrasenyaControlador;
+  late DateTime fechaSeleccionada;
+
+  @override
+  //Iniciamos los controladores.
+  void initState() {
+    super.initState();
+    nombreControlador = TextEditingController(text: widget.persona.nombre);
+    apellidosControlador = TextEditingController(
+      text: widget.persona.apellidos,
+    );
+    emailControlador = TextEditingController(text: widget.persona.correo);
+    contrasenyaControlador = TextEditingController(
+      text: widget.persona.contrasenya,
+    );
+    fechaSeleccionada = widget.persona.fechaNacimiento;
+  }
+
+  @override
+  //Dispose para cerrar las memorias y que no haya fuga de rendimiento.
+  void dispose() {
+    nombreControlador.dispose();
+    apellidosControlador.dispose();
+    emailControlador.dispose();
+    contrasenyaControlador.dispose();
+    super.dispose();
+  }
+
   // Tras investigar, al separar clases por temas de StatefulWidget, Dart nos proporciona
   // widget. como una especie de "this." para poder hacer llamadas a los datos.
   @override
@@ -21,19 +53,50 @@ class _PersonalPageState extends State<PersonalPage> {
       body: Center(
         child: Column(
           children: [
-            Text(style: TextStyle(fontSize: 30), widget.persona.nombre),
-            Text(style: TextStyle(fontSize: 30), widget.persona.apellidos),
-            Text(
+            TextField(
+              controller: nombreControlador,
               style: TextStyle(fontSize: 30),
-              // Ponemos una vista más adecuada para la fecha de nacimiento.
-              "${widget.persona.fechaNacimiento.day}-${widget.persona.fechaNacimiento.month}-${widget.persona.fechaNacimiento.year}",
             ),
-            Text(style: TextStyle(fontSize: 30), widget.persona.correo),
-            Text(style: TextStyle(fontSize: 30), widget.persona.contrasenya),
+            TextField(
+              controller: apellidosControlador,
+              style: TextStyle(fontSize: 30),
+            ),
+            //Utilizaremos un gestureDetector al click, para abrir el calendario.
+            GestureDetector(
+              onTap: () {
+                _seleccionarFecha();
+              },
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "${fechaSeleccionada.day}-${fechaSeleccionada.month}-${fechaSeleccionada.year}",
+                  style: TextStyle(fontSize: 30),
+                ),
+              ),
+            ),
+            Divider(color: Colors.black, thickness: 1.0),
+            TextField(
+              controller: emailControlador,
+              style: TextStyle(fontSize: 30),
+            ),
+            TextField(
+              controller: contrasenyaControlador,
+              style: TextStyle(fontSize: 30),
+            ),
             //ElevatedButton por estilo
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context, widget.persona);
+                Navigator.pop(
+                  context,
+                  Persona(
+                    nombre: nombreControlador.text,
+                    apellidos: apellidosControlador.text,
+                    fechaNacimiento: fechaSeleccionada,
+                    correo: emailControlador.text,
+                    contrasenya: contrasenyaControlador.text,
+                  ),
+                );
               },
               child: Text('Guardar'),
             ),
@@ -41,5 +104,21 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
       ),
     );
+  }
+
+  //Creación del método seleccionarFecha con el fin de poner un calendario más orientativo para el usuario.
+  Future<void> _seleccionarFecha() async {
+    final DateTime? fechaEscogida = await showDatePicker(
+      context: context,
+      initialDate: fechaSeleccionada,
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2007),
+    );
+
+    if (fechaEscogida != null && fechaEscogida != fechaSeleccionada) {
+      setState(() {
+        fechaSeleccionada = fechaEscogida;
+      });
+    }
   }
 }
