@@ -3,7 +3,6 @@ import 'screens/home_page.dart';
 
 void main() {
   runApp(MyApp());
-  cambios prueba
 }
 
 class MyApp extends StatelessWidget {

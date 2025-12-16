@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarea_2_multimedia/models/persona.dart';
 
 // Creamos HomePage como StatefulWidget porque necesitará cambiar su estado cuando
 // creemos otro de los widgets, concretamete PersonalPage
@@ -18,8 +19,20 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            Text("¡Bienvenidos!"),
-            ElevatedButton(onPressed: () {}, child: Text('Ir a Personal Page')),
+            // Le ponemos un poco más de tamaño de fuente para que se aprecie mejor.
+            Text("¡Bienvenidos!", style: TextStyle(fontSize: 30)),
+            ElevatedButton(
+              onPressed: () {
+                final miPersona = Persona(
+                  nombre: 'Rubén',
+                  apellidos: 'Gómez Hernández',
+                  fechaNacimiento: DateTime(1990, 11, 28),
+                  correo: 'rubengomez@paucasesnovescifp.cat',
+                  contrasenya: '12345',
+                );
+              },
+              child: Text('Ir a Personal Page'),
+            ),
             ElevatedButton(onPressed: () {}, child: Text('Ir a Widget Page')),
           ],
         ),
