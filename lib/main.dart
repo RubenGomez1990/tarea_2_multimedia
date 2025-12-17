@@ -10,6 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const HomePage());
+    return MaterialApp(
+      // Quitamos la flag de debug.
+      debugShowCheckedModeBanner: false,
+      home: const HomePage(),
+    );
   }
 }
