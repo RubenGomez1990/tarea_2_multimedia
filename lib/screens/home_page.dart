@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tarea_2_multimedia/models/persona.dart';
+import 'package:tarea_2_multimedia/screens/widget_page.dart';
 import 'personal_page.dart';
 
 // Creamos HomePage como StatefulWidget porque necesitará cambiar su estado cuando
@@ -56,7 +57,15 @@ class _HomePageState extends State<HomePage> {
               },
               child: Text('Ir a Personal Page'),
             ),
-            ElevatedButton(onPressed: () {}, child: Text('Ir a Widget Page')),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WidgetPage()),
+                );
+              },
+              child: const Text('Ir a Widget Page'),
+            ),
           ],
         ),
       ),
